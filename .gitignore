@@ -1,0 +1,6 @@
+conf/
+logger/
+.idea/
+static/img/
+static/admin/
+.DS_Store

@@ -1,0 +1,225 @@
+{% extends 'main.html' %}
+
+{% load staticfiles %}
+
+{%  block title %}
+    Создать заказ
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/styleCreateOrder.css' %}" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMCMkvqwiMglLVDbMUfHlVxhMoPfNLBL8&signed_in=true&libraries=places"></script>
+    <script src="{% static 'js/autocomplete.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="orders">
+        <h1>Создать заказ</h1>
+
+        <form action="{% url 'person:create_order' %}" method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                {% if field.errors %}
+                    <ul class="errorlist">
+                    {% for error in field.errors %}
+                        <li><i>{{ error|escape }}</i></li>
+                    {% endfor %}
+                    </ul>
+                 {% endif %}
+
+                <span class="input input--nao">
+
+                    <label class="input__label input__label--nao" for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field }}
+                    <svg class="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
+                        <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"/>
+                    </svg>
+                    <br>
+                </span>
+
+            {% endfor %}
+
+            <br>
+            <input style="margin-left: 20px; margin-top: 10px; background-color: #fff" class="submit-button" type="submit" value="Заказать">
+        </form>
+    </div>
+
+    <script>
+        window.onload = function() {
+            autocomplete.init(function(cost){
+                $('input#id_cost').attr({'placeholder':'рекомендуемая цена ' + cost + ' руб.' });
+            },'id_From','id_to');
+        };
+    </script>
+
+{% endblock %}
+
+
+    <!-- <script>
+                (function() {
+                    // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+                    if (!String.prototype.trim) {
+                        (function() {
+                            // Make sure we trim BOM and NBSP
+                            var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+                            String.prototype.trim = function() {
+                                return this.replace(rtrim, '');
+                            };
+                        })();
+                    }
+
+                    [].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+                        // in case the input is already filled..
+                        if( inputEl.value.trim() !== '' ) {
+                            classie.add( inputEl.parentNode, 'input--filled' );
+                        }
+
+                        // events:
+                        inputEl.addEventListener( 'focus', onInputFocus );
+                        inputEl.addEventListener( 'blur', onInputBlur );
+                    } );
+
+                    function onInputFocus( ev ) {
+                        classie.add( ev.target.parentNode, 'input--filled' );
+                    }
+
+                    function onInputBlur( ev ) {
+                        if( ev.target.value.trim() === '' ) {
+                            classie.remove( ev.target.parentNode, 'input--filled' );
+                        }
+                    }
+                })();
+            </script>
+-->
+
+
+ <!-- <script src="http://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script> -->
+
+
+  <!--  <a href="#x" class="overlay" id="win1"></a>
+    <div class="popup">
+        <div id="map" style="width:600px; height:300px"></div>
+        <a class="close" title="Закрыть" href="#close"></a>
+    </div>
+
+    <a href="#x" class="overlay" id="win2"></a>
+    <div class="popup">
+            <div id="map2" style="width:600px; height:300px"></div>
+        <a class="close" title="Закрыть" href="#close"></a>
+    </div>-->
+ <!-- <script>
+    $('#id_From').click(function() {
+        document.location.href = '#win1';
+    });
+    </script>-->
+    <!--<script>
+    $('#id_From').click(function(){
+       document.location.href='#win1';
+
+        if(document.location.href=='http://127.0.0.1:8000/create_order/#win1') {
+               DG.then(function () {
+                   var map,
+                           latLng = [51.67204, 39.1843];
+
+                   map = DG.map('map', {
+                       center: latLng,
+                       zoom: 15
+                   });
+
+
+                   map.on('click', onClick);
+
+                   group = DG.featureGroup();
+                   group.addTo(map);
+
+                   function onClick(e) {
+                       if (group.getLayers().length > 0) {
+                           group.clearLayers();
+                       }
+                       group.addLayer(DG.marker(e.latlng).addTo(map));
+
+                       latLng[0] = e.latlng.lat;
+                       latLng[1] = e.latlng.lng;
+                       DG.ajax({
+                           url: 'http://catalog.api.2gis.ru/geo/search',
+                           data: {
+                               key: 'rugtsa3524',
+                               version: 1.3,
+                               q: latLng[1] + ',' + latLng[0],
+                           },
+                           success: function (data) {
+                               var marker = DG.marker(latLng), text = "";
+
+                               text += data.result[0].name
+                               $('input[id="id_From"]').val(text);
+
+                               document.location.href = '#close';
+                           },
+                           error: function (error) {
+                               console.log(error);
+                           }
+                       });
+                   }
+
+
+               });
+           }
+
+
+    });
+    $('#id_to').click(function(){
+       document.location.href='#win2';
+
+        if(document.location.href=='http://127.0.0.1:8000/create_order/#win2') {
+               DG.then(function () {
+                   var map,
+                           latLng = [51.67204, 39.1843];
+
+                   map = DG.map('map2', {
+                       center: latLng,
+                       zoom: 15
+                   });
+
+
+                   map.on('click', onClick);
+
+                   group = DG.featureGroup();
+                   group.addTo(map);
+
+                   function onClick(e) {
+                       if (group.getLayers().length > 0) {
+                           group.clearLayers();
+                       }
+                       group.addLayer(DG.marker(e.latlng).addTo(map));
+
+                       latLng[0] = e.latlng.lat;
+                       latLng[1] = e.latlng.lng;
+                       DG.ajax({
+                           url: 'http://catalog.api.2gis.ru/geo/search',
+                           data: {
+                               key: 'rugtsa3524',
+                               version: 1.3,
+                               q: latLng[1] + ',' + latLng[0],
+                           },
+                           success: function (data) {
+                               var marker = DG.marker(latLng), text = "";
+
+                               text += data.result[0].name
+                               $('input[id="id_to"]').val(text);
+
+                               document.location.href = '#close';
+                           },
+                           error: function (error) {
+                               console.log(error);
+                           }
+                       });
+                   }
+
+
+               });
+           }
+
+
+    });
+    </script> -->

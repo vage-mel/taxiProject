@@ -1,0 +1,48 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{%  block title %}
+    Выполняемые заказы
+{% endblock %}
+
+{% block content %}
+
+    <div  class="orders">
+        <h1>Выполняемые заказы</h1>
+
+        {% for order in orders %}
+
+            <div data-order-id="{{ order.id }}" class="order">
+                <p class="username"><a href="{% url 'profile_info'  order.user.pk %}">{{ order.user.first_name }}</a></p>
+                <p class="clock-icon">{{ order.date }} </p>
+                <p class="from">{{ order.From }}</p>
+                <p class="to">{{ order.to }}</p>
+                <p class="money">{{ order.cost }} RUB </p>
+
+                {% if order.info_order %}
+                    <p class="note">{{ order.info_order }}</p>
+                {% endif %}
+
+                {% if order.status == canceled_person.value %}
+                    <p class="canceled-order">Заказ был отменен пользователем</p>
+                    <a class="close-order" href="{% url 'close_order' order.pk %}">Закрыть</a>
+                {% else %}
+                    <a class="call-user" href="tel:+7{{ order.user.phone_number }}">Позвонить</a>&nbsp;
+                    <a class="complete-order" href="{% url 'driver:complete_order' order.pk %}">Завершить</a>&nbsp;
+                    <a class="cancel-order"href="{% url 'cancel_order' order.pk %}">Отменить</a>
+                {% endif %}
+            </div>
+
+        {% empty %}
+            <p class="empty-orders">Список выполняемых заказов пуст</p>
+        {% endfor %}
+
+    </div>
+
+    <script  type="text/javascript">
+        var token = "{{ token }}";
+    </script>
+    <script src="{% static 'js/driver/wsDriverCurrentOrders.js' %}"></script>
+
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="{% static "css/auth-style.css" %}" rel="stylesheet"  >
+     <title>Регистрация</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+
+    <div class="main">
+
+      <div class="head">
+          <div class="head__logo">
+              <a href="/" ></a>
+          </div>
+      </div>
+
+      <div class="content">
+
+        <div class="signup-wrapper">
+
+            <div class="signup-title">
+              <div class="signup-title-text"> Регистрация машины</div>
+            </div>
+
+            <div class="signup-form">
+              <div class="form-container">
+                <form action="/auth/register/car/ " method="post">
+                 {% csrf_token %}
+                       <div class="signup-form__section car">
+                            <div class="signup-form__section-title ">
+                              <p>Машина</p>
+                            </div>
+
+
+                            <div class="signup-form__section-group required">
+                              <label for="car_number">Номер</label>
+                              <input class="{% if car_creation_form.number.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.number.name }}" name="{{ car_creation_form.number.name }}" value="{{ car_creation_form.number.value|default_if_none:'' }}" placeholder="а001аа36" />
+                              <div class="error">{{ car_creation_form.number.errors }}</div>
+                            </div>
+                            <div class="signup-form__section-group required">
+                              <label for="car_mark">Марка</label>
+                              <input class="{% if car_creation_form.mark.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.mark.name }}" name="{{ car_creation_form.mark.name }}" value="{{ car_creation_form.mark.value|default_if_none:'' }}" placeholder="Toyota" />
+                              <div class="error">{{ car_creation_form.mark.errors }}</div>
+                            </div>
+                            <div class="signup-form__section-group required">
+                              <label for="car_model">Модель</label>
+                              <input class="{% if car_creation_form.model.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.model.name }}" name="{{ car_creation_form.model.name }}" value="{{ car_creation_form.model.value|default_if_none:'' }}" placeholder="Prado" />
+                              <div class="error">{{ car_creation_form.model.errors }}</div>
+                            </div>
+                            <div class="signup-form__section-group required">
+                              <label for="car_year_issue">Год выпуска</label>
+                              <input class="{% if car_creation_form.year_issue.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.year_issue.name }}" name="{{ car_creation_form.year_issue.name }}" value="{{ car_creation_form.year_issue.value|default_if_none:'' }}"  placeholder="2017" />
+                              <div class="error">{{ car_creation_form.year_issue.errors }}</div>
+                            </div>
+                            <div class="signup-form__section-group required">
+                              <label for="password">Цвет</label>
+                              <input class="{% if car_creation_form.color.errors %}error-field{% endif %}" type="car_color" id="{{ car_creation_form.color.name }}" name="{{ car_creation_form.color.name }}" value="{{ car_creation_form.color.value|default_if_none:'' }}" placeholder="Серый" />
+                              <div class="error">{{ car_creation_form.color.errors }}</div>
+                            </div>
+                      </div>
+
+
+
+
+                  <div class="signup-form__section">
+                    <div class="signup-form__section-submit">
+                      <button class="btn-submit" type="submit">Зарегестрировать</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+
+            </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+  </body>
+
+</html>

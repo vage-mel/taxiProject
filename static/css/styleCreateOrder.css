@@ -1,0 +1,182 @@
+.input {
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	margin: 1em;
+	max-width: 650px;
+	width: calc(100% - 2em);
+	vertical-align: top;
+}
+
+.input__field {
+	position: relative;
+	display: block;
+	float: right;
+	padding: 0.8em;
+	width: 60%;
+	border: none;
+	border-radius: 0;
+	background: #f0f0f0;
+	color: #aaa;
+	font-weight: 400;
+	font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	-webkit-appearance: none; /* for box shadows to show on iOS */
+}
+
+.input__field:focus {
+	outline: none;
+}
+
+.input__label {
+	display: inline-block;
+	float: right;
+	padding: 0 1em;
+	width: 50%;
+	color: #696969;
+	font-weight: bold;
+	font-size: 70.25%;
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.input__label-content {
+	position: relative;
+	display: block;
+	padding: 1.6em 0;
+	width: 100%;
+}
+
+.graphic {
+	position: absolute;
+	top: 0;
+	left: 0;
+	fill: none;
+}
+
+.icon {
+	color: #ddd;
+	font-size: 150%;
+}
+
+/* Individual styles */
+
+
+
+/* Nao */
+.input--nao {
+	overflow: hidden;
+	padding-top: 1em;
+}
+
+.input__field--nao {
+	padding: 0.5em 0em 0.25em;
+	width: 100%;
+	background: transparent;
+	color: #9da8b2;
+	font-size: 1.25em;
+}
+
+.input__label--nao {
+	position: absolute;
+	top: 0em;
+	font-size: 0.95em;
+	left: 0;
+	display: block;
+	width: 100%;
+	text-align: left;
+	padding: 0em;
+	pointer-events: none;
+	-webkit-transform-origin: 0 0;
+	transform-origin: 0 0;
+	-webkit-transition: -webkit-transform 0.2s 0.15s, color 1s;
+	transition: transform 0.2s 0.15s, color 1s;
+	-webkit-transition-timing-function: ease-out;
+	transition-timing-function: ease-out;
+}
+
+.graphic--nao {
+	stroke: #92989e;
+	pointer-events: none;
+	-webkit-transition: -webkit-transform 0.7s, stroke 0.7s;
+	transition: transform 0.7s, stroke 0.7s;
+	-webkit-transition-timing-function: cubic-bezier(0, 0.25, 0.5, 1);
+	transition-timing-function: cubic-bezier(0, 0.25, 0.5, 1);
+}
+
+.input__field--nao:focus + .input__label--nao,
+.input--filled .input__label--nao {
+
+	/*color: #333;
+	-webkit-transform: translate3d(0, -1.25em, 0) scale3d(0.75, 0.75, 1);
+	transform: translate3d(0, -1.25em, 0) scale3d(0.75, 0.75, 1);*/
+}
+
+/* Анимация
+.input__field--nao:focus ~ .graphic--nao,
+.input--filled .graphic--nao {
+	stroke: #333;
+	-webkit-transform: translate3d(-66.6%, 0, 0);
+	transform: translate3d(-66.6%, 0, 0);
+}
+*/
+
+.errorlist{
+	/*position: absolute;
+    margin-bottom: -60px;
+	margin-left: 400px;
+    color:red;
+	list-style: none;*/
+	    position: absolute;
+    /* float: left; */
+    left: 150px;
+    list-style: none;
+    color: red;
+}
+
+.submit-button {
+   border: 1px solid #90a3b2;
+
+   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;
+   border-radius: 4px;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+
+   color: #90a3b2;
+   font-family: helvetica, serif;
+   padding: 8.5px 18px;
+   font-size: 14px;
+   text-decoration: none;
+   vertical-align: middle;
+    background: #f0f0f0;
+
+
+   }
+
+.submit-button:hover {
+   border: 1px solid #aec5d4;
+   background: #a4b7c6;
+   background: -webkit-gradient(linear, left top, left bottom, from(#a4b7c6), to(#8595a3));
+   background: -webkit-linear-gradient(top, #a4b7c6, #8595a3);
+   background: -moz-linear-gradient(top, #a4b7c6, #8595a3);
+   background: -ms-linear-gradient(top, #a4b7c6, #8595a3);
+   background: -o-linear-gradient(top, #a4b7c6, #8595a3);
+   background-image: -ms-linear-gradient(top, #a4b7c6 0%, #8595a3 100%);
+   color: #f5edf6;
+   }
+
+@media screen and (max-width: 5.8in) {
+ 	::-webkit-input-placeholder {font-size: 10pt;}
+	::-moz-placeholder          {font-size: 10pt;}/* Firefox 19+ */
+	:-moz-placeholder           {color:#c0392b;}/* Firefox 18- */
+	:-ms-input-placeholder      {color:#c0392b;}
+
+
+}

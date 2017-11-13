@@ -1,0 +1,187 @@
+
+html{
+  margin: 0;
+  padding: 0;
+}
+body{
+  margin: 0;
+  padding: 0;
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial;
+}
+
+input,button,select{
+  outline: none;
+}
+
+.main{
+  height: 100%;
+}
+
+.head{
+  background-color: black;
+  width:100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+.head__logo{
+  background: url('../img/loginsys/head_logo.png') left top no-repeat;
+  height: 30px;
+  width: 160px;
+  margin: 0 auto;
+}
+.head__logo a{
+  display: inline-block;
+  height: 36px;
+  width: 160px
+}
+
+.nav-link{
+  position: absolute;
+  top:30%;
+  right:4%;
+  color: white;
+  text-underline: none;
+}
+.signup-wrapper{
+  max-width: 450px;
+  margin: 0 auto;
+}
+.signup-title{
+  margin: 0 auto;
+}
+.signup-title-text{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  font-size: 25px;
+  color:#38A6A8;
+}
+
+.form-container{
+  width: 65%;
+  margin: 0 auto;
+}
+.signup-form__section{
+  padding-bottom: 20px;
+}
+.signup-form__section-title{
+  font-size: 22px;
+}
+
+.signup-form__section-group{
+  padding-bottom: 19px;
+  overflow:auto;
+}
+.signup-form__section-group label{
+  display: block;
+  padding-bottom: 8px;
+  color: #666;
+}
+.signup-form__section-group.required label::before {
+    content: "*";
+    padding-right: 4px;
+    font-size: 16px;
+    color: red;
+}
+.signup-form__section-group input, select{
+  width: 100%;
+  height: 40px;
+  border: 1px solid #c7c2c2;
+  padding: 10px;
+  border-radius: 3px;
+  background-color: #FFFFFF;
+}
+.signup-form__section-group select{
+  width: 100%;
+  height: 40px;
+  border: 1px solid #c7c2c2;
+  padding: 10px;
+  border-radius: 3px;
+  -webkit-appearance: none;
+  background: url('../img/loginsys/select-list-arrow.png') #FFFFFF right 7px top 12px no-repeat;
+  background-size: 6px 14px;
+}
+.date-container select:nth-child(1){
+  float: left;
+  width: 32%;
+  margin-right: 1%;
+}
+.date-container select:nth-child(2){
+  float: left;
+  width: 32%;
+  margin-right: 1%;
+}
+.date-container select:nth-child(3){
+  width: 33%;
+}
+
+.error-field{
+  border: 1px solid #ff0000 !important;
+}
+
+.errorlist{
+  list-style: none;
+  color: #ff0000;
+  margin-top: 5px;
+  margin-left: -30px;
+  display: inline-block;
+  font-size: 12px;
+}
+.error{
+  color:red;
+}
+.signup-form__subsection{
+  width: 100%;
+
+}
+.signup-form__subsection-col1{
+  float: left;
+  width: 48%;
+  display: block;
+}
+
+.signup-form__subsection-col2{
+  float: right;
+  width: 48%;
+  display: block;
+}
+.signup-form__subsection-col3{
+  float: left;
+  width: 32%;
+  margin-right: 1%;
+}
+.btn-submit{
+  background-color: #38A6A8;
+  color: #ffffff;
+  padding-top:15px;
+  padding-bottom: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+  border-radius: 3px;
+  width: 100%;
+  border: 0;
+  height: 40px;
+  cursor: pointer;
+}
+
+@media only screen and (min-width:1025px) and (max-width: 1280px)  {
+
+}
+@media only screen  and (min-width: 769px) and (max-width: 1024px)  {
+
+}
+@media only screen  and (min-width: 576px) and (max-width: 768px) {
+
+}
+@media only screen and (max-width: 505px){
+  .signup-wrapper{
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .form-container{
+    width: 100%;
+  }
+
+}

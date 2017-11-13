@@ -1,0 +1,100 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{%  block title %}
+      Мои заказы
+{% endblock %}
+
+{% block head %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLivCYAqXZRypzW3A0vNC1ISKrEilOz34"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="orders">
+        <h1>Мои заказы</h1>
+
+        {% for order in orders %}
+            <div data-order-id="{{ order.id }}" class="order">
+                <p class="clock-icon">{{ order.date }} </p>
+                <p class="from">{{ order.From }}</p>
+                <p class="to">{{ order.to }}</p>
+                <p class="money">{{ order.cost }} RUB </p>
+
+                {% if order.info_order %}
+                    <p class="note">{{ order.info_order }}</p>
+                {% endif %}
+
+                {% if order.driver.first_name %}
+                    <p class="username"><a class="href" href="{% url 'profile_info'  order.driver.pk %}">{{ order.driver.first_name }}</a></p>
+                {% else %}
+
+                   <div class="find_driver">
+                        <div id="circularG">
+                            <div id="circularG_1" class="circularG"></div>
+                            <div id="circularG_2" class="circularG"></div>
+                            <div id="circularG_3" class="circularG"></div>
+                            <div id="circularG_4" class="circularG"></div>
+                            <div id="circularG_5" class="circularG"></div>
+                            <div id="circularG_6" class="circularG"></div>
+                            <div id="circularG_7" class="circularG"></div>
+                            <div id="circularG_8" class="circularG"></div>
+                        </div>
+                       <p style="display:inline;" class="driver"> &nbsp;Поиск водителя</p>
+                   </div>
+
+
+                {% endif %}
+              <!--
+                <div style="width:400px; height: 200px" id="map_{{ order.id }}"></div>
+                <script>
+                    var uluru = {
+                        lat: 51.6720400,
+                        lng: 39.1843000
+                    }, map_{{ order.id }} = new google.maps.Map(document.getElementById("map_{{ order.id }}"), {
+                        zoom: 11,
+                        center: uluru
+                    });
+                </script>
+                -->
+                {% if order.status == canceled_driver.value %}
+                    <p class="canceled-order"><b>Заказ был отменен водителем</b></p>
+                    <a class="close-order" href="{% url 'close_order' order.pk %}">Закрыть</a>
+                {% else %}
+                    {% if order.driver %}
+                         <a class="call-user" href="tel:+7{{ order.driver.phone_number }}">Позвонить</a>&nbsp;
+                    {% endif %}
+
+                    <a class="more-info-order" href="{% url 'person:info_order'  order.pk %}">Подробнее</a>&nbsp;
+                    <a class="cancel-order" href="{% url 'cancel_order' order.pk %}">Отменить</a>
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+            <p class="empty-orders">Список ваших заказов пуст</p>
+        {% endfor %}
+
+        {% if orders %}
+                {% if orders.has_previous %}
+                    <a href="?page={{ orders.previous_page_number }}"><<</a>
+                {% endif %}
+
+                <span class="current-page">
+                    {{ orders.number }} из {{ orders.paginator.num_pages }}
+                </span>
+
+                {% if orders.has_next %}
+                    <a href="?page={{ orders.next_page_number }}">>></a>
+                {% endif %}
+
+        {% endif %}
+    </div>
+
+
+    <script  type="text/javascript">
+        var token = "{{ token }}";
+    </script>
+
+    <script src="{% static 'js/person/wsUserCurrentOrders.js' %}"></script>
+
+{% endblock %}

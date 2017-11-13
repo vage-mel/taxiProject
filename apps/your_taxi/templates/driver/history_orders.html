@@ -1,0 +1,46 @@
+{% extends 'main.html' %}
+
+{%  block title %}
+    История заказов
+{% endblock %}
+
+{% block content %}
+    <div  class="orders">
+        <h1>История заказов</h1>
+
+        {% for order in orders %}
+
+            <div class="order">
+                <p class="username"><a href="{% url 'profile_info'  order.user.pk %}">{{ order.user.first_name }}</a></p>
+                <p class="clock-icon">{{ order.date }} </p>
+                <p class="from">{{ order.From }}</p>
+                <p class="to">{{ order.to }}</p>
+                <p class="money">{{ order.cost }} RUB </p>
+
+                {% if order.info_order %}
+                    <p class="note">{{ order.info_order }}</p>
+                {% endif %}
+            </div>
+
+        {% empty %}
+            <p class="empty-orders">История ваших заказов пуста</p>
+        {% endfor %}
+
+        {% if orders %}
+            {% if orders.has_previous %}
+                <a href="?page={{ orders.previous_page_number }}"><<</a>
+            {% endif %}
+
+            <span class="current-page">
+                {{ orders.number }} из {{ orders.paginator.num_pages }}
+            </span>
+
+            {% if orders.has_next %}
+                <a href="?page={{ orders.next_page_number }}">>></a>
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

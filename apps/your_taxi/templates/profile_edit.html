@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{%  block title %}
+    Профиль
+{% endblock %}
+
+{%  block head %}
+    <link rel="stylesheet" href="{% static 'css/styleEditForm.css' %}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block content %}
+    <div class="orders">
+        <h1>Профиль</h1>
+        <p style="color: red;">{{ error }}</p>
+
+        <form action="{% url 'profile_edit' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field.errors }}
+                <br> <label class="form-title" for="{{ field.name }}">{{ field.label }}</label>
+                <br>{{ field }}
+            {% endfor %}
+            <br>
+            <input class="submit-button" id="reg-submit" type="submit" value="Сохранить">
+        </form>
+    </div>
+{% endblock %}

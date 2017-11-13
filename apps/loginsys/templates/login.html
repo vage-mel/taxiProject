@@ -1,0 +1,70 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="{% static "css/auth-style.css" %}" rel="stylesheet"  >
+     <title>Вход</title>
+  </head>
+  <body>
+
+    <div class="main">
+
+      <div class="head">
+          <div class="head__logo">
+              <a href="/" ></a>
+          </div>
+      </div>
+
+      <div class="content">
+
+        <div class="signup-wrapper">
+
+            <div class="signup-title">
+              <div class="signup-title-text">Вход</div>
+            </div>
+
+            <div class="signup-form">
+              <div class="form-container">
+                <form action="/auth/login/" method="post">
+                    {% csrf_token %}
+                  <div class="signup-form__section account">
+                    <div class="signup-form__section-title ">
+
+                    </div>
+                    <div class="signup-form__section-group required">
+                      <label for="signup-email">Номер телефона</label>
+                      <input type="text" id="signin-phone_number" name="phone_number"   />
+
+                    </div>
+                    <div class="signup-form__section-group required">
+                      <label for="signup-password">Пароль</label>
+                      <input  type="password" id="signin-passwoed" name="password" />
+                      <div class="error">
+                          {% if login_error %}
+                            <span>{{ login_error }}</span>
+                          {% endif %}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="signup-form__section">
+                    <div class="signup-form__section-submit">
+                      <button class="btn-submit" type="submit">Войти</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+
+            </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+  </body>
+
+</html>

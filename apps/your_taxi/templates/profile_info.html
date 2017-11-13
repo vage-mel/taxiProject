@@ -1,0 +1,88 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{%  block title %}
+    Профиль
+{% endblock %}
+
+{%  block head %}
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'plugins/jquery-barrating/themes/fontawesome-stars-o.css' %}" />
+    <script src="{% static 'plugins/jquery-barrating/jquery.barrating.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="orders">
+        <h1>Профиль</h1>
+        <h3 style="margin-bottom: -10px">Личная информация</h3>
+        <div class="order">
+            <p><b>Имя:</b> {{ user_profile.first_name }}</p>
+            <p><b>Город:</b> {{ user_profile.city }}</p>
+
+            {%  if is_edit_mode %}
+                <p><b>Телефон:</b> +7{{ user_profile.phone_number }}</p>
+            {% endif %}
+
+            {% if  user_profile.is_driver and user_profile.car or is_edit_mode == False and user_profile.car %}
+                <p style="float: left; margin-top: -1px" for="order_rating"><b>Рейтинг: </b></p>
+                <select id="order_rating" style="float: left;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            {% endif %}
+
+            {%  if is_edit_mode %}
+                <a href="{% url 'profile_edit' %}">Редактировать</a>
+                {% if not user_profile.car %}
+                    <a href="/auth/register/car/">Регистрация машины</a>
+                {% endif %}
+            {% endif %}
+
+        </div>
+
+
+        {% if user_profile.car and user_profile.is_driver or is_edit_mode == False and user_profile.car %}
+            <h3 style="margin-bottom: -10px">Машина</h3>
+            <div class="order">
+                <p><b>Номер:</b> {{user_profile.car.number}}</p>
+                <p><b>Марка:</b> {{user_profile.car.mark}}</p>
+                <p><b>Модель:</b> {{user_profile.car.model}}</p>
+                <p><b>Год выпуска:</b> {{user_profile.car.year_issue}}</p>
+                <p><b>Цвет:</b> {{user_profile.car.color}}</p>
+
+                {%  if is_edit_mode  %}
+                    <a href="{% url 'driver:car_edit' %}">Редактировать</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {%  if  user_profile.is_driver and user_profile.car or is_edit_mode == False and user_profile.car %}
+            <h3 style="margin-bottom: -10px">Последние отзывы</h3>
+            <div class="order">
+                {% for order in orders_with_comment %}
+                    <p><span style="font-size: 12px">{{ o.date }}</span> {{ order.user.first_name }}: {{ order.comment }} </p>
+                {% empty %}
+                    <p>Отзывов пока нету</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+    </div>
+
+    <script type="text/javascript">
+        var rating = parseFloat('{{ rating }}'.replace(',', '.'));
+        $(function() {
+            $('#order_rating').barrating({
+                theme: 'fontawesome-stars-o',
+                initialRating: rating,
+                readonly:true
+            });
+            // $('.br-current-rating').after('<span> '+Number(rating.toFixed(1))+'</span>');
+        });
+
+    </script>
+{% endblock %}

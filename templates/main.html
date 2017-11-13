@@ -1,0 +1,70 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width height=device-height user-scalable=yes">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'css/icon.css' %}" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script src="{% static 'js/wsSettings.js' %}"></script>
+    <script src="{% static 'js/notification.js' %}"></script>
+    {%  block head %} {% endblock %}
+</head>
+<body class="menu-active">
+<script>
+    var driverGeoActive = '{{ driver_geo_active }}';
+</script>
+<!-- Navigation -->
+    <nav id="slide-menu">
+        <div id="logo"><a href="/"> Your taxi</a> </div>
+        <ul>
+            {% if user %}
+                {% if not user.is_driver %}
+                    <li class=""><a href="{% url 'profile_info' user.pk %}"> {{ user.first_name }}  {{ user.last_name }}   </a></li>
+                    <li class="sep settings"> </li>
+                    <li class="my_order"><a href="{% url 'person:current_orders' %}">Мои заказы</a></li>
+                    <li class="create_order"><a href="{% url 'person:create_order' %}">Создать заказ</a></li>
+                    <li class="history"><a href="{% url 'person:history_orders' %}">История заказов</a></li>
+                    <li class="sep settings"></li>
+                    <li class="in_driver"><a href="{% url 'in_driver' %}">Режим водителя</a></li>
+                {% else %}
+                    <li class=""><a href="/profile_info/{{ user.pk }}/"> {{ user.first_name }} {{ user.last_name }}   </a></li>
+                    <li class="sep settings"> </li>
+                    <li class="timeline"><a href="{% url 'driver:current_orders' %}">Выполняемые заказы</a></li>
+                    <li class="list"><a href="{% url 'driver:list_orders' %}">Список заказов</a></li>
+                    <li class="history"><a href="{% url 'driver:history_orders' %}">История заказов</a></li>
+                    <li class="sep settings"></li>
+                    <li class="in_person"><a href="{% url 'in_person' %}">Режим пользователя</a></li>
+                {% endif %}
+                    <li class="logout"><a href="{% url 'logout' %}">Выход </a></li>
+            {% else %}
+                    <li class="login"><a href="{% url 'login' %}">Вход</a> </li>
+
+            {% endif %}
+        </ul>
+    </nav>
+
+
+<!-- Content panel -->
+    <div id="content">
+
+        <div class="menu-trigger">
+        </div>
+            {%  block content %}
+            {%  endblock %}
+
+    </div>
+
+<script type="text/javascript" src="{% static 'js/show_trigger.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/geoLocation.js' %}"></script>
+<script>
+    {% if user.is_driver  and driver_geo_active %}
+       // geoLocation.checkPermission();
+    {% endif %}
+</script>
+
+
+</body>
+</html>

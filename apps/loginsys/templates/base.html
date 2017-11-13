@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Log in
+{% endblock %}
+
+{% block login %}
+    <link rel="stylesheet" href="{% static 'css/styleFormReg.css' %}" type="text/css" media="screen" />
+
+     <div class="orders">
+            <h1> Вход </h1>
+            <form action="/auth/login/" method="post">
+                {% csrf_token %}
+
+                {% if login_error %}
+                   <label class="error">{{ login_error }}</label><br>
+                {% endif %}
+
+                <label for="username">Телефон</label><br>
+                <input type="text" name="username" id="username"><br>
+                <label for="password">Пароль</label><br>
+                <input type="password" name="password" id="password"><br>
+
+
+
+
+                <input class="button" id="comment-submit" type="submit" value="Вход">&nbsp;
+               <br> <br><a class="button" id="comment-submit" href="/auth/register/">Регистрация пользователя</a>
+               <br>  <br><a class="button" id="comment-submit" href="/auth/register/1/">Регистрация водителя</a>
+
+
+            </form>
+    </div>
+
+{% endblock %}

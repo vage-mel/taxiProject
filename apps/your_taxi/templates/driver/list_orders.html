@@ -1,0 +1,101 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{%  block title %}
+    Список заказов
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'js/moment.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div id="ords" class="orders">
+
+        <h1>Список заказов</h1>
+
+        {% if access %}
+
+            {% for order in orders %}
+                <div data-order-id="{{order.pk}}" class="order">
+                    <p class="username"><a href="{% url 'profile_info'  order.user.pk %}">{{ order.user.first_name }}</a></p>
+                    <p class="clock-icon" data-date="{{ order.date | date:"Y-m-d H:i:s" }}"></p>
+                    <p class="from">{{ order.From }}</p>
+                    <p class="to">{{ order.to }}</p>
+                    <p class="money">{{ order.cost }} RUB </p>
+
+                    {% if order.info_order %}
+                        <p class="note">{{ order.info_order }}</p>
+                    {% endif %}
+                    <a class="perform-order" href="#" class="perform_order" title="Выполнить"  onclick="perfomOrder({{order.pk}})">Выполнить</a>
+                </div>
+
+            {% empty %}
+                <p class="empty-orders">Список заказов пуст</p>
+            {% endfor %}
+
+            {% if orders %}
+
+                {% if orders.has_previous %}
+                    <a href="?page={{ orders.previous_page_number }}"><<</a>
+                {% endif %}
+
+                <span class="current-page">
+                    {{ orders.number }} из {{ orders.paginator.num_pages }}
+                </span>
+
+                {% if orders.has_next %}
+                    <a href="?page={{ orders.next_page_number }}">>></a>
+                {% endif %}
+
+            {% endif %}
+
+
+            <script  type="text/javascript">
+                var token = "{{ token }}";
+
+                function perfomOrder(input_string) {
+                    $.ajax({
+                        url : "{% url 'driver:perform_order' %}",
+                        type : "POST",
+                        dataType: "json",
+                        data : {
+                            orderPk : input_string,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                            },
+                        success : function(json) {
+                                if(json.access_){
+                                    document.location="{% url 'driver:current_orders' %}"
+                                }else{
+                                    alert("Завершите предыдущий заказ")
+                                }
+                        },
+                        error : function(xhr,errmsg,err) {
+                           alert("Ошибка"+err+errmsg)
+                        }
+                    });
+                }
+
+                function setTimeFormat(){
+                    moment.locale('ru');
+
+                    $(document).find('[data-order-id]').each(function(i, elem){
+                        var timeGui = $(elem).find('[class="clock-icon"]')
+                        timeGui.text(moment(timeGui.data('date')).fromNow())
+                    });
+                }
+
+                setTimeFormat();
+                var timerId = setInterval(function() {
+                    setTimeFormat()
+                }, 60000);
+            </script>
+            <script src="{% static 'js/driver/wsDriverListOrders.js' %}"></script>
+
+        {% else %}
+            <h4>Завершите предыдущий заказ</h4>
+        {% endif %}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+
+{%  block title %}
+    Информация о заказе
+{% endblock %}
+
+{% block content %}
+
+    <div  class="orders">
+        <h1>Информация о заказе</h1>
+
+        <div class="order">
+            <p class="clock-icon">{{ order.date }} </p>
+            <p class="from">{{ order.From }}</p>
+            <p class="to">{{ order.to }}</p>
+            <p class="money">{{ order.cost }} RUB </p>
+
+            {% if order.info_order %}
+                <p class="note">{{ order.info_order }}</p>
+            {% endif %}
+
+            {% if order.userDriver %}
+                <p class="username">{{ order.driver.first_name }}</p>
+                <p class="number">{{ order.driver.car.number }}</p>
+                <p class="mark">{{ order.driver.car.mark }} {{ order.driver.car.model }}</p>
+                <p></p>
+                <p class="telephone">{{ order.driver.phone_number }}</p>
+            {% else %}
+                <p><b>Водитель не назначен</b></p>
+            {% endif %}
+            <a href="{% url 'person:cancel_order' order.pk %}">Отменить</a>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}

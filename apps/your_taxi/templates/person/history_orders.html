@@ -1,0 +1,132 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{%  block title %}
+    История заказов
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'plugins/jquery-barrating/themes/fontawesome-stars.css' %}" />
+    <script src='{% static 'js/packaged.min.js' %}'></script>
+    <script src="{% static 'plugins/jquery-barrating/jquery.barrating.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+
+    <script type="text/javascript">
+        if(document.location.href == 'win1')
+                 document.location.href = '#close';
+
+        function sendComment(form) {
+            var data = {};
+            data['text'] = form.find('#id_text').val();
+            data['order_id'] = form.find('#order_id').val();
+            data['csrfmiddlewaretoken'] = '{{ csrf_token }}';
+            data['order_rating'] = form.find('#order_rating').val();
+
+            $.ajax({
+                url : "{% url 'person:history_orders' %}",
+                type : "POST",
+                dataType: "json",
+                data : data,
+                success : function(json) {
+                    $('#'+json.order_id).find('a[href="#win1"]').remove();
+                    document.location.href = '#close';
+                    form.find('#id_text').val('');
+                    noty({
+                        text: 'Отзыв отправлен!',
+                        layout: 'top',
+                        closeWith: [ 'hover'],
+                        type: 'success'
+                      });
+
+                },
+                error : function(xhr, errmsg, err) {
+                   alert("Ошибка "+err+" "+errmsg)
+                }
+                });
+            };
+
+    </script>
+
+    <a href="#x" class="overlay" id="win1"></a>
+    <div class="popup">
+        <form id="commentСreationForm" method="POST" action="javascript:void(null);" onsubmit="sendComment($(this))">
+            {{ comment_creation_form }}
+
+            {% csrf_token %}
+            <label for="order_rating">Ваша оценка:</label>
+            <select id="order_rating">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+
+            <input type="hidden" id="order_id" name="order_id">
+            <br /><input type="submit" name="send" value="Отправить" class="button">
+
+        </form>
+        <a class="close" title="Закрыть" href="#close"></a>
+    </div>
+
+    <div class="orders">
+        <h1>История заказов</h1>
+
+        {% for order in orders %}
+            <div id="fade" class="black-overlay"></div>
+
+            <div class="order" data-order-id="{{ order.pk }}">
+                <p class="clock-icon">{{ order.date }} </p>
+                <p class="from">{{ order.From }}</p>
+                <p class="to">{{ order.to }}</p>
+                <p class="money">{{ order.cost }} RUB </p>
+
+                {% if order.info_order %}
+                    <p class="note">{{ order.info_order }}</p>
+                {% endif %}
+
+                <p class="username"><a href="{% url 'profile_info'  order.driver.pk %}">{{  order.driver.first_name}}</a> </p>
+
+                {% if order.comment == '' and  not order.rating  %}
+                    <a href="#win1" onclick = "document.location.href = '#win1'; document.getElementById('order_id').value={{ order.pk }}">Оставить отзыв</a>
+                {%  endif %}
+            </div>
+
+
+        {% empty %}
+            <p class="empty-orders">История ваших заказов пуста</p>
+            </div>
+        {% endfor %}
+
+        {% if orders %}
+            {% if orders.has_previous %}
+                <a href="?page={{ orders.previous_page_number }}"><<</a>
+            {% endif %}
+
+            <span class="current-page">
+                {{ orders.number }} из {{ orders.paginator.num_pages }}
+            </span>
+
+            {% if orders.has_next %}
+                <a href="?page={{ orders.next_page_number }}">>></a>
+            {% endif %}
+
+        {% endif %}
+
+  </div>
+
+
+<script type="text/javascript">
+   $(function() {
+      $('#order_rating').barrating({
+          theme: 'fontawesome-stars',
+          initialRating: 5,
+      });
+   });
+</script>
+
+{% endblock %}

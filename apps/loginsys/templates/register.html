@@ -1,0 +1,269 @@
+{% load staticfiles %}
+<html>
+  <head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+     <link href="{% static "css/auth-style.css" %}" rel="stylesheet"  >
+      <title>Регистрация</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  </head>
+  <body>
+
+    <div class="main">
+
+      <div class="head">
+          <div class="head__logo">
+              <a href="/" ></a>
+          </div>
+          {% if user %}
+              <a class="nav-link" href="{% url 'logout' %}">Выход </a>
+          {% endif %}
+      </div>
+
+      <div class="content">
+
+        <div class="signup-wrapper">
+
+            <div class="signup-title">
+              <div class="signup-title-text">{% if reg_mode == 'driver' %} Регистрация водителя {% elif reg_mode == 'user' %} Регистрация пользователя {% elif reg_mode == 'reg_phone' %} Подтверждение регистрации{% endif %}</div>
+            </div>
+
+            {% if reg_mode == 'driver' or reg_mode == 'user' %}
+                <div class="signup-form">
+                  <div class="form-container">
+                    <form action="{% if reg_mode == 'driver' %}/auth/register/driver/ {% else %}/auth/register/{% endif %}" method="post">
+                        {% csrf_token %}
+                      <div class="signup-form__section account">
+                        <div class="signup-form__section-title ">
+                          <p>Личная информация</p>
+                        </div>
+                        <div class="signup-form__section-group required">
+                          <label for="signup-email">Эл. почта</label>
+                          <input class="{% if form.email.errors %}error-field{% endif %}" type="text" id="{{  form.email.id_for_label }}" name="{{ form.email.name }}" placeholder="name@example.com" value="{{ form.email.value|default_if_none:'' }}" />
+                          <div class="error">{{ form.email.errors }}</div>
+                        </div>
+                        <div class="signup-form__section-group required">
+                          <label for="signup-password">Пароль</label>
+                          <input class="{% if form.password.errors %}error-field{% endif %}" type="password" id="{{  form.password.id_for_label }}" name="{{ form.password.name }}" value="{{ form.password.value|default_if_none:'' }}" placeholder="Не менее 5 символов" />
+                          <div class="error">{{ form.password.errors }}</div>
+                        </div>
+                      </div>
+
+                      <div class="signup-form__section profile">
+                        <div class="signup-form__section-title ">
+                          <p>Профиль</p>
+                        </div>
+                        <div class="signup-form__section-group required">
+                          <label for="signup-first_name">Имя</label>
+                          <div class="signup-form__subsection">
+                            <div class="signup-form__subsection-col1">
+                              <input class="{% if form.first_name.errors %}error-field{% endif %}" type="text" id="{{  form.first_name.id_for_label }}" name="{{ form.first_name.name }}" value="{{ form.first_name.value|default_if_none:''}}" placeholder="Имя" />
+                                <div class="error">{{ form.first_name.errors }}</div>
+                            </div>
+                            <div class="signup-form__subsection-col2">
+                              <input class="{% if form.last_name.errors %}error-field{% endif %}" type="text" id="{{  form.last_name.id_for_label }}" name="{{ form.last_name.name }}" value="{{ form.last_name.value|default_if_none:'' }}" placeholder="Фамилия" />
+                                <div class="error">{{ form.last_name.errors }}</div>
+                            </div>
+
+                          </div>
+                        </div>
+                        <!--
+                        <div class="signup-form__section-group required">
+                          <label for="signup-phone-number">Номер мобильного</label>
+                          <input class="{% if form.phone_number.errors %}error-field{% endif %}" type="text" id="{{  form.phone_number.id_for_label }}" name="{{ form.phone_number.name }}" value="{{ form.phone_number.value|default_if_none:'' }}" placeholder="9204273309" />
+                          <div class="error">{{ form.phone_number.errors }}</div>
+                        </div>
+                        -->
+                        <div class="signup-form__section-group required required">
+                          <label for="signup-city">Город</label>
+                           {{ form.city }}
+                          <div class="error">{{ form.city.errors }}</div>
+                        </div>
+
+                        {% if reg_mode == 'driver' %}
+                            <div class="signup-form__section-group required required">
+                              <label for="signup-date_of_birth">Дата рождения</label>
+                               <div class="date-container">
+                                  {{ form.date_of_birth }}
+                               </div>
+                              <div class="error">{{ form.date_of_birth.errors }}</div>
+                            </div>
+                            <div class="signup-form__section-group required required">
+                              <label for="signup-sex">Пол</label>
+                               {{ form.sex }}
+                              <div class="error">{{ form.sex.errors }}</div>
+                            </div>
+                        {% endif %}
+                      </div>
+
+                        {% if reg_mode == 'driver' %}
+                           <div class="signup-form__section car">
+                                <div class="signup-form__section-title ">
+                                  <p>Машина</p>
+                                </div>
+
+                            <!--     <div class="signup-form__section-group required">
+                                  <div class="signup-form__subsection">
+                                   <div class="signup-form__subsection-col1">
+                                       <label for="car_number">Номер</label>
+                                       <input class="{% if car_creation_form.number.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.number.name }}" name="{{ car_creation_form.number.name }}" value="{{ car_creation_form.number.value|default_if_none:'' }}" placeholder="" />
+                                       <div class="error">{{ car_creation_form.number.errors }}</div>
+                                    </div>
+                                    <div class="signup-form__subsection-col3">
+                                        <label for="car_mark">Марка</label>
+                                        <input class="{% if car_creation_form.mark.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.mark.name }}" name="{{ car_creation_form.mark.name }}" value="{{ car_creation_form.mark.value|default_if_none:'' }}" placeholder="" />
+                                        <div class="error">{{ car_creation_form.mark.errors }}</div>
+                                    </div>
+                                  <div class="signup-form__subsection-col3">
+                                        <label for="car_model">Модель</label>
+                                        <input class="{% if car_creation_form.model.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.model.name }}" name="{{ car_creation_form.model.name }}" value="{{ car_creation_form.model.value|default_if_none:'' }}" placeholder="" />
+                                        <div class="error">{{ car_creation_form.model.errors }}</div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                             <div class="signup-form__section-group required">
+                                  <div class="signup-form__subsection">
+                                   <div class="signup-form__subsection-col1">
+                                      <label for="car_year_issue">Год выпуска</label>
+                                      <input class="{% if car_creation_form.year_issue.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.year_issue.name }}" name="{{ car_creation_form.year_issue.name }}" value="{{ car_creation_form.year_issue.value|default_if_none:'' }}"  placeholder="" />
+                                      <div class="error">{{ car_creation_form.year_issue.errors }}</div>
+                                    </div>
+                                    <div class="signup-form__subsection-col2">
+                                        <label for="password">Цвет</label>
+                                        <input class="{% if car_creation_form.color.errors %}error-field{% endif %}" type="car_color" id="{{ car_creation_form.color.name }}" name="{{ car_creation_form.color.name }}" value="{{ car_creation_form.color.value|default_if_none:'' }}" placeholder="" />
+                                        <div class="error">{{ car_creation_form.color.errors }}</div>
+                                    </div>
+
+                                  </div>
+                                </div>
+    *                           /-->
+
+                                <div class="signup-form__section-group required">
+                                  <label for="car_number">Номер</label>
+                                  <input class="{% if car_creation_form.number.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.number.name }}" name="{{ car_creation_form.number.name }}" value="{{ car_creation_form.number.value|default_if_none:'' }}" placeholder="а001аа36" />
+                                  <div class="error">{{ car_creation_form.number.errors }}</div>
+                                </div>
+                                <div class="signup-form__section-group required">
+                                  <label for="car_mark">Марка</label>
+                                  <input class="{% if car_creation_form.mark.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.mark.name }}" name="{{ car_creation_form.mark.name }}" value="{{ car_creation_form.mark.value|default_if_none:'' }}" placeholder="Toyota" />
+                                  <div class="error">{{ car_creation_form.mark.errors }}</div>
+                                </div>
+                                <div class="signup-form__section-group required">
+                                  <label for="car_model">Модель</label>
+                                  <input class="{% if car_creation_form.model.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.model.name }}" name="{{ car_creation_form.model.name }}" value="{{ car_creation_form.model.value|default_if_none:'' }}" placeholder="Prado" />
+                                  <div class="error">{{ car_creation_form.model.errors }}</div>
+                                </div>
+                                <div class="signup-form__section-group required">
+                                  <label for="car_year_issue">Год выпуска</label>
+                                  <input class="{% if car_creation_form.year_issue.errors %}error-field{% endif %}" type="text" id="{{ car_creation_form.year_issue.name }}" name="{{ car_creation_form.year_issue.name }}" value="{{ car_creation_form.year_issue.value|default_if_none:'' }}"  placeholder="2017" />
+                                  <div class="error">{{ car_creation_form.year_issue.errors }}</div>
+                                </div>
+                                <div class="signup-form__section-group required">
+                                  <label for="password">Цвет</label>
+                                  <input class="{% if car_creation_form.color.errors %}error-field{% endif %}" type="car_color" id="{{ car_creation_form.color.name }}" name="{{ car_creation_form.color.name }}" value="{{ car_creation_form.color.value|default_if_none:'' }}" placeholder="Серый" />
+                                  <div class="error">{{ car_creation_form.color.errors }}</div>
+                                </div>
+                          </div>
+                        {% endif %}
+
+
+
+                      <div class="signup-form__section">
+                        <div class="signup-form__section-submit">
+                          <button class="btn-submit" type="submit">Создать аккаунт</button>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+
+                </div>
+            {% elif reg_mode == 'reg_phone' %}
+
+                <div class="signup-form">
+                    <div class="form-container">
+
+                        {% if error_message %}
+                            <div class="signup-form__section error">{{ error_message }} </div>
+                        {% endif  %}
+                        <form action="/auth/register/reg_phone/" method="post">
+                            {% csrf_token %}
+                            <div class="signup-form__section account">
+                                <div class="signup-form__section-group required">
+                                    <label for="signup-phone-number">Номер мобильного</label>
+                                    <input type="text" id="phone_number" {% if phone_number %} readonly="true" {% endif %} name="phone_number" value="{{ phone_number }}" placeholder="Пример: +79210000000" />
+                                </div>
+                            </div>
+
+                            <div class="signup-form__section send-pin" style="{% if not pin_sended %}display:none{% endif %}">
+                                <div class="signup-form__section-group required">
+                                    <label for="signup-phone-number">Код подтверждения</label>
+                                    <input type="text" id="pin" name="pin" value="" placeholder="Введите код сюда" />
+                                </div>
+                              <div class="signup-form__section-submit">
+                                    <button data-type='sendpin' class="btn-submit" type="submit">Отправить код</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="signup-form__section get-pin" style="{% if pin_sended %}display:none{% endif %}">
+                            <div class="signup-form__section-submit">
+                                <button data-type='getpin' class="btn-submit" type="submit">Получить код</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <script>
+                    $('.signup-form__section.pin').hide();
+                    $(document).ready(function() {
+                        function send_pin(phoneNumber) {
+                            $.ajax({
+                                url: "{% url 'ajax_send_pin' %}",
+                                type: "POST",
+                                data: {
+                                    phone_number:  phoneNumber,
+                                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                                },
+                                dataType: "json"
+                            }).done(function(data) {
+                                if($('.signup-form__section.error')){
+                                    $('.signup-form__section.error').remove()
+                                }
+
+                                if(data.success){
+                                    $('.signup-form__section.send-pin').show();
+                                    $('.signup-form__section.get-pin').hide();
+                                    $('#phone_number').prop('readonly', true);
+                                }else{
+                                    $('.form-container').prepend('<div class="signup-form__section error">'+data.message+'</div>')
+                                }
+
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+                                alert(errorThrown + ' : ' + jqXHR.responseText);
+                            });
+                        }
+
+
+                        $('button[data-type="getpin"]').on('click', function(){
+                            var phoneNumber = $('#phone_number').val();
+                            send_pin(phoneNumber)
+                        });
+
+                    });
+                </script>
+            {% endif %}
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,145 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="{% static "css/home-style.css" %}" rel="stylesheet"  >
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMCMkvqwiMglLVDbMUfHlVxhMoPfNLBL8&signed_in=true&libraries=places"></script>
+    <script src="{% static 'js/autocomplete.js' %}"></script>
+  </head>
+  <body>
+
+    <div class="main">
+
+      <div class="wrapper">
+
+        <div class="head">
+            <div class="head__logo"><a class="link" href="/"> <img src="{% static 'img/home/head_logo.png' %}"></a></div>
+            <div class="head__auth">
+              <ul>
+                <li><a class="link" href="/auth/login/">Вход</a></li>
+                <li><a class="button" href="#popup">Регистрация</a></li>
+              </ul>
+            </div>
+        </div>
+
+        <div class="start">
+          </div>
+          <div class="start__title">
+            <div class="start__title-text">
+              <h1>Начни день с <span class="logo_title">your taxi</span></h1>
+              <p>Ваше такси в ваших руках.  Установите свою цену за проезд</p>
+            </div>
+          </div>
+          <div class="start__logo"></div>
+
+        </div>
+
+        <div class="advantages">
+          <div class="advantages__within">
+
+            <div class="advantages__within-column">
+                <img src="{% static 'img/home/no-credit-card.svg' %}" />
+
+              <div class="advantages__within-text">
+                <h4>Нет абонентской платы</h4>
+                <p>У тебя есть машина? Зарабатывай по пути на работу и домой. Мы не взимаем абонетской платы с водителей. </p>
+              </div>
+
+            </div>
+
+            <div class="advantages__within-column">
+              <img src="{% static 'img/home/ruble.svg' %}" />
+              <div class="advantages__within-text">
+                <h4>Своя цена за проезд</h4>
+                <p>Пользователи сами решают, какую цену установаить за проезд. </p>
+              </div>
+            </div>
+
+            <div class="advantages__within-column">
+              <img src="{% static 'img/home/taxi.svg' %}" />
+              <div class="advantages__within-text">
+                <h4>2 режима на профиль</h4>
+                <p>Одним нажатием вы можете переключиться между режимом водителя и пользователя.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="test">
+        </div>
+
+        <div class="passage-cost">
+
+
+            <div class="passage-cost__price">
+              <h1>Рассчитать рекомендуемую стоимость поездки</h1>
+              <div>
+                <form>
+                  <input type="text"  id="street_from" class="passage-cost__price-input" placeholder="Ввведите место отправления" />
+                  <input type="text"  id="street_to" class="passage-cost__price-input" placeholder="Ввведите пункт назначения" />
+                </form>
+              </div>
+            </div>
+            <div class="passage-cost__map-wrapper">
+              <div id="map" class="passage-cost__map"></div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <div class="footer__logo"><a class="link" href="/"> <span class="logo_title">your taxi<span> </a></div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+    <div id="popup" class="popup">
+      <div class="popup__content">
+
+        <div class="popup-top">
+
+        </div>
+
+        <a href="/auth/register/user/">
+          <span class="popup-left">
+            <span>
+              <img src="{% static "img/home/user.png" %}" />
+            </span>
+            <h1>Стать пассажиром</h1>
+          </span>
+
+        </a>
+
+        <a href="/auth/register/driver/">
+          <span class="popup-right">
+            <span>
+               <img src="{% static "img/home/driver.png" %}" />
+            </span>
+            <h1>Стать водителем</h1>
+          </span>
+
+        </a>
+
+      </div>
+    </div>
+    <script>
+        window.onload = function() {
+           autocomplete.initMap('map');
+           autocomplete.init(function(cost){
+             if ($('#recommend_price').length) {
+                 $('#recommend_price').remove();
+             }
+
+             $('.passage-cost__price-input').last().after('<p id="recommend_price">' + 'Рекомендуемая цена поездки ' + cost + ' руб.</p>');
+           },'street_from','street_to');
+        };
+    </script>
+  </body>
+
+</html>
